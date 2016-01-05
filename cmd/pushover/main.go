@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 
@@ -41,8 +41,6 @@ func main() {
 	m := pushover.NewMessage(token, user, device, title)
 
 	// Read the message from stdin and send via pushover.net
-	s := bufio.NewScanner(os.Stdin)
-	for s.Scan() {
-		fmt.Fprintf(m, s.Text())
-	}
+	message, err := ioutil.ReadAll(os.Stdin)
+	fmt.Fprintf(m, string(message))
 }
