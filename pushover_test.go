@@ -40,7 +40,7 @@ func TestPush(t *testing.T) {
 		}
 
 		if resp != test.ExpectedResponse {
-			t.Errorf("The response of %v is not equal to that expected response %v", resp, test.ExpectedResponse)
+			t.Errorf("The response of %v is not equal to the expected response of %v", resp, test.ExpectedResponse)
 		}
 	}
 }
