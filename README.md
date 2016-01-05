@@ -1,7 +1,7 @@
 # Pushover Golang Package
 A golang package for sending notifications via https://pushover.net.
 
-This library is **not intended for production use** and was written by its author as an exercise to learn more about golang. Please don't import it and us it in any projects that you care about.
+This library is **not intended for production use** and was written by its author as an exercise to learn more about golang. Please don't import it and use it in any projects that you care about.
 
 # An Example
 ```golang
