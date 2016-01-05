@@ -3,7 +3,7 @@ A golang package for sending notifications via https://pushover.net.
 
 This library is **not intended for production use** and was written by its author as an exercise to learn more about golang. Please don't import it and use it in any projects that you care about.
 
-# Example
+# Package Example
 You can use the pushover package within your golang applications as follows:
 ```Go
 // Set your pushover api keys (these are examples)
@@ -18,7 +18,7 @@ m.Push("Server exchange01.example.net is in a critical state.")
 ```
 _Note: The pushover.Message struct also implements io.Writer for convenience sake._
 
-# CLI Tool
+# Command Line Tool
 A command line tool is provided under cmd/pushover. Build and install the command using:
 ```Shell
 $ make install
