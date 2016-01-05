@@ -2,10 +2,8 @@ package pushover
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 )
 
@@ -55,9 +53,13 @@ func TestWrite(t *testing.T) {
 		m := NewMessage("", "", "", test.Title)
 		m.URL = s.URL
 
-		_, err := io.Copy(m, strings.NewReader("Test message from Write method"))
+		byteCount, err := fmt.Fprintln(m, test.Message)
 		if err != nil {
 			t.Error(err)
+		}
+
+		if byteCount < 0 {
+			t.Error("Response was smaller than expected")
 		}
 	}
 }
