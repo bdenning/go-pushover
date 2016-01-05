@@ -1,3 +1,4 @@
+// Package pushover provides methods for sending messages using the http://pushover.net API.
 package pushover
 
 import (
