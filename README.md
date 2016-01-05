@@ -20,17 +20,17 @@ _Note: The pushover.Message struct also implements io.Writer for convenience sak
 
 # Commandline Tool
 A command line tool is provided under cmd/pushover. Build and install the command using:
-```
+```Shell
 $ make install
 ```
 Before using the commandline too, you must first set the following environment variables.
-```
+```Shell
 $ export PUSHOVER_TOKEN="[your device token]"
 $ export PUSHOVER_USER="[your user token]"
 $ export PUSHOVER_DEVICE="[your device id]"
 ```
 Then messages can be sent by piping output to the pushover command.
-```
+```Shell
 $ echo "Server exchange01.example.net is in a critcal state" | pushover
 ```
 
