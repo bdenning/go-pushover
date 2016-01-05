@@ -15,15 +15,15 @@ func getEnvSettings() (token string, user string, device string) {
 	device = os.Getenv("PUSHOVER_DEVICE")
 
 	if token == "" {
-		log.Fatal("Missing environment variable settings")
+		log.Fatal("Missing PUSHOVER_TOKEN environment variable")
 	}
 
 	if user == "" {
-		log.Fatal("Missing environment variable settings")
+		log.Fatal("Missing PUSHOVER_USER environment variable")
 	}
 
 	if device == "" {
-		log.Fatal("Missing environment variable settings")
+		log.Fatal("Missing PUSHOVER_DEVICE environment variable")
 	}
 
 	return
