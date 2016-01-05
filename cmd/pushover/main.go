@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"git.int.dotsec.com/pushover"
+	"github.com/bdenning/pushover"
 )
 
 func getEnvSettings() (token string, user string, device string) {
