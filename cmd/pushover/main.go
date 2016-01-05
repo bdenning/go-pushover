@@ -41,6 +41,6 @@ func main() {
 	m := pushover.NewMessage(token, user, device, title)
 
 	// Read the message from stdin and send via pushover.net
-	message, err := ioutil.ReadAll(os.Stdin)
-	fmt.Fprintf(m, string(message))
+	stdin, err := ioutil.ReadAll(os.Stdin)
+	fmt.Fprintf(m, string(stdin))
 }
