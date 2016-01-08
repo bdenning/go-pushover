@@ -38,4 +38,4 @@ It is not currently possible to provide a title. At present the title will be se
 
 # Links
 * Pushover API Documentation: https://pushover.net/api
-* Documentation for this package:  https://gowalker.org/github.com/bdenning/pushover
+* Documentation for this package:  https://godoc.org/github.com/bdenning/pushover
