@@ -2,21 +2,27 @@
 package pushover
 
 import (
-	"errors"
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"strings"
 )
 
 const pushoverURL = "https://api.pushover.net/1/messages.json"
 
-// Message implements an io.Writer that will send messages to pushover.net
+// Message contains all the required settings for sending messages via the pushover.net API
 type Message struct {
 	Token  string
 	User   string
 	Device string
 	URL    string
+}
+
+// Response contains the JSON response returned by the pushover.net API
+type Response struct {
+	Request string   `json:"request"`
+	Status  int      `json:"status"`
+	Errors  []string `json:"errors"`
 }
 
 // NewMessage returns a new Message with API token values and a recipient device configured.
@@ -25,7 +31,7 @@ func NewMessage(token string, user string, device string) *Message {
 }
 
 // Push sends a message via the pushover.net API and returns the json response
-func (m *Message) Push(title string, message string) (r string, err error) {
+func (m *Message) Push(title string, message string) (r *Response, err error) {
 	msg := url.Values{}
 	msg.Set("token", m.Token)
 	msg.Set("user", m.User)
@@ -35,14 +41,19 @@ func (m *Message) Push(title string, message string) (r string, err error) {
 
 	resp, err := http.PostForm(m.URL, msg)
 	if err != nil {
-		return "", errors.New("Unable to POST request to " + m.URL)
+		return r, err
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "", errors.New("Unable to read HTTP response from " + m.URL)
+		return r, err
 	}
 
-	return strings.Trim(string(body), "\n"), nil
+	r = &Response{}
+	if err := json.Unmarshal(body, r); err != nil {
+		return r, err
+	}
+
+	return r, nil
 }

@@ -46,5 +46,8 @@ func main() {
 	}
 
 	// Send the message
-	m.Push(title, string(stdin))
+	_, err = m.Push(title, string(stdin))
+	if err != nil {
+		log.Fatal("Error while sending message")
+	}
 }

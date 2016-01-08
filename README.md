@@ -15,7 +15,7 @@ user := "e9e1495ec75826de5983cd1abc8031"
 device := "test_device"
 
 // Send your message
-m := pushover.NewMessage(token, user, device, title)
+m := pushover.NewMessage(token, user, device)
 m.Push("Alert", "Server exchange01.example.net is in a critical state.")
 ```
 
