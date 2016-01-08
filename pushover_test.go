@@ -42,14 +42,16 @@ var testCases = []struct {
 
 func TestPush(t *testing.T) {
 	for _, test := range testCases {
+		// Create a fresh new message object for each test case
 		m := pushover.NewMessage(test.Token, test.User, test.Device)
 
+		// Replace the token, user and device values. Some of these replace statement are intended to fail.
 		m.Token = strings.Replace(m.Token, "$token$", os.Getenv("PUSHOVER_TOKEN"), 1)
 		m.User = strings.Replace(m.User, "$user$", os.Getenv("PUSHOVER_USER"), 1)
 		m.Device = strings.Replace(m.Device, "$device$", os.Getenv("PUSHOVER_DEVICE"), 1)
 
+		// If the PUSHOVER_USE_REAL_API environment variable isn't set, then use a mock http service running locally
 		if os.Getenv("PUSHOVER_USE_REAL_API") != "true" {
-			// Run tests against a mock HTTP service
 			s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprintln(w, test.ExpectedResponse)
 			}))
@@ -58,13 +60,17 @@ func TestPush(t *testing.T) {
 			m.URL = s.URL
 		}
 
+		// Send a message and check for errors
 		resp, err := m.Push(test.Title, test.Message)
 		if err != nil {
-			t.Error(err)
+			if test.ExpectedStatus != 0 {
+				t.Errorf("A test that should have failed \"%s\" has passed: %v", test.Title, err)
+			}
 		}
 
+		// Just to double check, we make sure that the status code returned by the API is what we were expecting
 		if resp.Status != test.ExpectedStatus {
-			t.Errorf("The test message \"%s\" returned an unexpected status code of %d: %v\n", test.Title, resp.Status, resp.Errors[0])
+			t.Errorf("The \"%s\" test returned an unexpected status code: %v", test.Title, resp.Status)
 		}
 	}
 }
