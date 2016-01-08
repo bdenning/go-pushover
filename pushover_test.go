@@ -2,10 +2,8 @@ package pushover_test
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 
 	"github.com/bdenning/pushover"
@@ -36,10 +34,10 @@ func TestPush(t *testing.T) {
 		s := mockPushoverServer(test.ExpectedResponse)
 		defer s.Close()
 
-		m := pushover.NewMessage("", "", "", test.Title)
+		m := pushover.NewMessage("", "", "")
 		m.URL = s.URL
 
-		resp, err := m.Push(test.Message)
+		resp, err := m.Push(test.Title, test.Message)
 		if err != nil {
 			t.Error(err)
 		}
@@ -55,43 +53,8 @@ func ExampleMessage_Push() {
 	token := "KzGDORePKggMaC0QOYAMyEEuZJnyUi"
 	user := "e9e1495ec75826de5983cd1abc8031"
 	device := "test_device"
-	title := "Example message"
 
 	// Send a new message using the Push method.
-	m := pushover.NewMessage(token, user, device, title)
-	m.Push("Example message contents")
-}
-
-func TestWrite(t *testing.T) {
-	for _, test := range testCases {
-		s := mockPushoverServer(test.ExpectedResponse)
-		defer s.Close()
-
-		m := pushover.NewMessage("", "", "", test.Title)
-		m.URL = s.URL
-
-		byteCount, err := fmt.Fprintln(m, test.Message)
-		if err != nil {
-			t.Error(err)
-		}
-
-		if byteCount < 0 {
-			t.Error("Response was smaller than expected")
-		}
-	}
-}
-
-func ExampleMessage_Write() {
-	// Set API keys. You'll need to configure these by logging in to https://pushover.net.
-	token := "KzGDORePKggMaC0QOYAMyEEuZJnyUi"
-	user := "e9e1495ec75826de5983cd1abc8031"
-	device := "test_device"
-	title := "Example message"
-
-	// Send a new message using the Write method.
-	m := pushover.NewMessage(token, user, device, title)
-	fmt.Fprintf(m, "Example message contents")
-
-	// Here's another example using an io.Reader object and io.Copy
-	io.Copy(m, strings.NewReader("Another example"))
+	m := pushover.NewMessage(token, user, device)
+	m.Push("Test Title", "Test message contents")
 }

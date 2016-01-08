@@ -9,17 +9,15 @@ This library is **not intended for production use** and was written by its autho
 # Package Example
 You can use the pushover package within your golang applications as follows:
 ```Go
-// Set your pushover api keys (these are examples)
+// Set your pushover API keys
 token := "KzGDORePKggMaC0QOYAMyEEuZJnyUi"
 user := "e9e1495ec75826de5983cd1abc8031"
 device := "test_device"
-title := "Alert"
 
 // Send your message
 m := pushover.NewMessage(token, user, device, title)
-m.Push("Server exchange01.example.net is in a critical state.")
+m.Push("Alert", "Server exchange01.example.net is in a critical state.")
 ```
-_Note: The pushover.Message struct also implements io.Writer for convenience sake._
 
 # Command Line Tool
 A command line tool is provided under cmd/pushover. Build and install the command using:
@@ -36,5 +34,3 @@ Then messages can be sent by piping output to the pushover command.
 ```Shell
 $ echo "Server exchange01.example.net is in a critcal state" | pushover
 ```
-
-It is not currently possible to provide a title. At present the title will be set to the hostname of the computer it was sent from.

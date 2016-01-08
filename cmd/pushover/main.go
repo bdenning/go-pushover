@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -38,9 +37,14 @@ func main() {
 	}
 
 	// Create a new pushover message object with our settings
-	m := pushover.NewMessage(token, user, device, title)
+	m := pushover.NewMessage(token, user, device)
 
 	// Read the message from stdin and send via pushover.net
 	stdin, err := ioutil.ReadAll(os.Stdin)
-	fmt.Fprintf(m, string(stdin))
+	if err != nil {
+		log.Fatal("Error getting input from stdin")
+	}
+
+	// Send the message
+	m.Push(title, string(stdin))
 }
