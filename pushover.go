@@ -50,11 +50,6 @@ func (m *Message) Push(title string, message string) (r *Response, err error) {
 	}
 	defer resp.Body.Close()
 
-	// Check the pushover.net API responded with HTTP status 200 (OK)
-	if resp.StatusCode != 200 {
-		return r, ErrHTTPStatus
-	}
-
 	// Read the JSON response in to a []byte
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
