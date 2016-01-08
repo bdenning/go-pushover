@@ -46,6 +46,24 @@ var testCases = []struct {
 		0},
 }
 
+/*
+// TestPushConnectionFailure tests what will happen if the pushover.net API cannot be contacted due to network connectivity problems.
+func TestPushConnectionFailure(t *testing.T) {
+	m := pushover.NewMessage("", "", "")
+	m.URL = "http://example.net:1234" // Set a bogus URL
+	_, err := m.Push("Test Title", "Test message contents")
+
+	// Make sure the attempt to send always results in an error being returned.
+	if err == nil {
+		t.Fail()
+	}
+
+	// TODO(@bdenning) We should test here for specific error responses.
+	// These will be either ErrHTTPStatus (if behind a proxy) or a connection failure if directly connected to the internet.
+}
+*/
+
+// TestPush runs through a number of test cases (testCases) and ensures that API responses are as expected.
 func TestPush(t *testing.T) {
 	for _, test := range testCases {
 		// Create a fresh new message object for each test case
@@ -56,7 +74,7 @@ func TestPush(t *testing.T) {
 		m.User = strings.Replace(m.User, "$user$", os.Getenv("PUSHOVER_USER"), 1)
 		m.Device = strings.Replace(m.Device, "$device$", os.Getenv("PUSHOVER_DEVICE"), 1)
 
-		// If the PUSHOVER_USE_REAL_API environment variable isn't set, then use a mock http service running locally
+		// If the PUSHOVER_USE_REAL_API environment variable isn't set, then use a mock http service running locally.
 		if os.Getenv("PUSHOVER_USE_REAL_API") != "true" {
 			s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprintln(w, test.ExpectedResponse)
@@ -74,7 +92,7 @@ func TestPush(t *testing.T) {
 			}
 		}
 
-		// Just to double check, we make sure that the status code returned by the API is what we were expecting
+		// Just to double check, we make sure that the status code returned by the API is what we were expecting.
 		if resp.Status != test.ExpectedStatus {
 			t.Errorf("The \"%s\" test returned an unexpected status code: %v", test.Title, resp.Status)
 		}

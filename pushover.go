@@ -40,12 +40,20 @@ func (m *Message) Push(title string, message string) (r *Response, err error) {
 	msg.Set("title", title)
 	msg.Set("message", message)
 
+	// Initalise an empty response
+	r = &Response{}
+
 	// Send the message the the pushover.net API
 	resp, err := http.PostForm(m.URL, msg)
 	if err != nil {
 		return r, err
 	}
 	defer resp.Body.Close()
+
+	// Check the pushover.net API responded with HTTP status 200 (OK)
+	if resp.StatusCode != 200 {
+		return r, ErrHTTPStatus
+	}
 
 	// Read the JSON response in to a []byte
 	body, err := ioutil.ReadAll(resp.Body)
@@ -54,15 +62,14 @@ func (m *Message) Push(title string, message string) (r *Response, err error) {
 	}
 
 	// Copy the response from pushover.net in to a pushover.Response struct
-	r = &Response{}
 	if err := json.Unmarshal(body, r); err != nil {
 		return r, err
 	}
 
-	// Check to see if pushover.net set the status to indicate an error
+	// Check to see if pushover.net set the status to indicate an error without providing and explanation
 	if r.Status != 1 {
 		if len(r.Errors) < 1 {
-			return r, errors.New("Recieved a status code indicating an error but did not receive an error message from pushover.net")
+			return r, ErrUnknown
 		}
 
 		// TODO(@bdenning) Looks like the API can actualy return an array. We should support this.
