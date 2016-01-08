@@ -9,7 +9,12 @@ import (
 	"net/url"
 )
 
-const pushoverURL = "https://api.pushover.net/1/messages.json"
+const (
+	// PushoverURL is the API endpoint that will be used for sending all messages.
+	PushoverURL = "https://api.pushover.net/1/messages.json"
+	// StatusSuccess is the expected status code when a message has been succesfully sent.
+	StatusSuccess = 1
+)
 
 // Message contains all the required settings for sending messages via the pushover.net API
 type Message struct {
@@ -28,7 +33,7 @@ type Response struct {
 
 // NewMessage returns a new Message with API token values and a recipient device configured.
 func NewMessage(token string, user string, device string) *Message {
-	return &Message{token, user, device, pushoverURL}
+	return &Message{token, user, device, PushoverURL}
 }
 
 // Push sends a message via the pushover.net API and returns the json response
@@ -62,7 +67,7 @@ func (m *Message) Push(title string, message string) (r *Response, err error) {
 	}
 
 	// Check to see if pushover.net set the status to indicate an error without providing and explanation
-	if r.Status != 1 {
+	if r.Status != StatusSuccess {
 		if len(r.Errors) < 1 {
 			return r, ErrUnknown
 		}

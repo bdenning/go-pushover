@@ -17,47 +17,58 @@ var testCases = []struct {
 	Device           string
 	Title            string
 	Message          string
+	URL              string
 	ExpectedResponse string
 	ExpectedStatus   int
 }{
 	{"$token$",
 		"$user$",
 		"$device$",
-		"Ok Test", "This test should succeed",
+		"Ok Test",
+		"This test should succeed",
+		pushover.PushoverURL,
 		`{"status":1,"request":"5e4a7a331ba4e45f3eb26cf447d61466"}`,
 		1},
 	{"[invalid device token]",
 		"$user$",
 		"$device$",
-		"Invalid Device Token", "This test should fail",
+		"Invalid Device Token",
+		"This test should fail",
+		pushover.PushoverURL,
 		`{"token":"invalid","errors":["application token is invalid"],"status":0,"request":"2eb28a69b6d9d67e5a937829954a8273"}`,
 		0},
 	{"$token$",
 		"[invalid user token]",
 		"$device$",
-		"Invalid User Token", "This test should fail",
+		"Invalid User Token",
+		"This test should fail",
+		pushover.PushoverURL,
 		`{"user":"invalid","errors":["user identifier is not a valid user, group, or subscribed user key"],"status":0,"request":"024e029a6569c0224c8e3a5510657ee8"}`,
 		0},
 	{"$token$",
 		"[invalid user token]",
 		"$device$",
-		"Error Status Without Error Response", "This test should fail",
+		"Error Status Without Error Response",
+		"This test should fail",
+		pushover.PushoverURL,
 		`{"user":"invalid","status":0,"request":"024e029a6569c0224c8e3a5510657ee8"}`,
 		0},
-}
-
-// TestPushConnectionFailure tests what will happen if the pushover.net API cannot be contacted due to network connectivity problems.
-func TestPushConnectionFailure(t *testing.T) {
-	m := pushover.NewMessage("", "", "")
-	m.URL = "http://example.net:1234" // Set a bogus URL
-	_, err := m.Push("Test Title", "Test message contents")
-
-	// Make sure the attempt to send always results in an error being returned.
-	if err == nil {
-		t.Fail()
-	}
-
-	// TODO(@bdenning) We should test here for specific error responses.
+	{"$token$",
+		"[invalid user token]",
+		"$device$",
+		"Connection Failure Test",
+		"This test should fail",
+		"http://localhost:5555",
+		``,
+		0},
+	{"$token$",
+		"[invalid user token]",
+		"$device$",
+		"External Connection Failure Test",
+		"This test should fail",
+		"http://example.net:5555",
+		``,
+		0},
 }
 
 // TestPush runs through a number of test cases (testCases) and ensures that API responses are as expected.
@@ -85,7 +96,7 @@ func TestPush(t *testing.T) {
 		resp, err := m.Push(test.Title, test.Message)
 
 		// Check for failures that did not result in Push() returning an error
-		if err == nil && resp.Status == 0 {
+		if err == nil && resp.Status != pushover.StatusSuccess {
 			t.Errorf("A test that should have failed \"%s\" has passed: %v", test.Title, err)
 		}
 
