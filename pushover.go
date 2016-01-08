@@ -18,10 +18,9 @@ const (
 
 // Message contains all the required settings for sending messages via the pushover.net API
 type Message struct {
-	Token  string
-	User   string
-	Device string
-	URL    string
+	Token string
+	User  string
+	URL   string
 }
 
 // Response contains the JSON response returned by the pushover.net API
@@ -32,17 +31,15 @@ type Response struct {
 }
 
 // NewMessage returns a new Message with API token values and a recipient device configured.
-func NewMessage(token string, user string, device string) *Message {
-	return &Message{token, user, device, PushoverURL}
+func NewMessage(token string, user string) *Message {
+	return &Message{token, user, PushoverURL}
 }
 
 // Push sends a message via the pushover.net API and returns the json response
-func (m *Message) Push(title string, message string) (r *Response, err error) {
+func (m *Message) Push(message string) (r *Response, err error) {
 	msg := url.Values{}
 	msg.Set("token", m.Token)
 	msg.Set("user", m.User)
-	msg.Set("device", m.Device)
-	msg.Set("title", title)
 	msg.Set("message", message)
 
 	// Initalise an empty response

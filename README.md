@@ -12,11 +12,10 @@ You can use the pushover package within your golang applications as follows:
 // Set your pushover API keys
 token := "KzGDORePKggMaC0QOYAMyEEuZJnyUi"
 user := "e9e1495ec75826de5983cd1abc8031"
-device := "test_device"
 
 // Send your message
-m := pushover.NewMessage(token, user, device)
-m.Push("Alert", "Server exchange01.example.net is in a critical state.")
+m := pushover.NewMessage(token, user)
+m.Push("Server exchange01.example.net is in a critical state.")
 ```
 
 # Command Line Tool
@@ -28,9 +27,8 @@ Before using the command line tool, you must first set the following environment
 ```Shell
 $ export PUSHOVER_TOKEN="KzGDORePKggMaC0QOYAMyEEuZJnyUi"
 $ export PUSHOVER_USER="e9e1495ec75826de5983cd1abc8031"
-$ export PUSHOVER_DEVICE="test_device"
 ```
 Then messages can be sent by piping output to the pushover command.
 ```Shell
-$ echo "Server exchange01.example.net is in a critcal state" | pushover
+$ echo "Server exchange01.example.net is in a critical state" | pushover
 ```

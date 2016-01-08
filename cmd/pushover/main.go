@@ -8,10 +8,9 @@ import (
 	"github.com/bdenning/pushover"
 )
 
-func getEnvSettings() (token string, user string, device string) {
+func getEnvSettings() (token string, user string) {
 	token = os.Getenv("PUSHOVER_TOKEN")
 	user = os.Getenv("PUSHOVER_USER")
-	device = os.Getenv("PUSHOVER_DEVICE")
 
 	if token == "" {
 		log.Fatal("Missing PUSHOVER_TOKEN environment variable")
@@ -21,23 +20,15 @@ func getEnvSettings() (token string, user string, device string) {
 		log.Fatal("Missing PUSHOVER_USER environment variable")
 	}
 
-	if device == "" {
-		log.Fatal("Missing PUSHOVER_DEVICE environment variable")
-	}
-
-	return
+	return token, user
 }
 
 func main() {
 	// Get the required configuration information
-	token, user, device := getEnvSettings()
-	title, err := os.Hostname()
-	if err != nil {
-		log.Fatal(err)
-	}
+	token, user := getEnvSettings()
 
 	// Create a new pushover message object with our settings
-	m := pushover.NewMessage(token, user, device)
+	m := pushover.NewMessage(token, user)
 
 	// Read the message from stdin and send via pushover.net
 	stdin, err := ioutil.ReadAll(os.Stdin)
@@ -46,7 +37,7 @@ func main() {
 	}
 
 	// Send the message
-	_, err = m.Push(title, string(stdin))
+	_, err = m.Push(string(stdin))
 	if err != nil {
 		log.Fatal("Error while sending message")
 	}

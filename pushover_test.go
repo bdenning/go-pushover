@@ -15,12 +15,11 @@ import (
 func TestPush(t *testing.T) {
 	for _, test := range testCases {
 		// Create a fresh new message object for each test case
-		m := pushover.NewMessage(test.Token, test.User, test.Device)
+		m := pushover.NewMessage(test.Token, test.User)
 
 		// Replace the token, user and device values. Some of these replace statement are intended to fail.
 		m.Token = strings.Replace(m.Token, "$token$", os.Getenv("PUSHOVER_TOKEN"), 1)
 		m.User = strings.Replace(m.User, "$user$", os.Getenv("PUSHOVER_USER"), 1)
-		m.Device = strings.Replace(m.Device, "$device$", os.Getenv("PUSHOVER_DEVICE"), 1)
 
 		// If the PUSHOVER_USE_REAL_API environment variable isn't set, then use a mock http service running locally.
 		if os.Getenv("PUSHOVER_USE_REAL_API") != "true" {
@@ -38,16 +37,16 @@ func TestPush(t *testing.T) {
 		}
 
 		// Send a message and check for errors
-		resp, err := m.Push(test.Title, test.Message)
+		resp, err := m.Push(test.Message)
 
 		// Check for failures that did not result in Push() returning an error
 		if err == nil && resp.Status != pushover.StatusSuccess {
-			t.Errorf("A test that should have failed \"%s\" has passed: %v", test.Title, err)
+			t.Errorf("A test that should have failed \"%s\" has passed: %v", test.Message, err)
 		}
 
 		// Check that the the status returned by the API is what we were expecting.
 		if resp.Status != test.ExpectedStatus {
-			t.Errorf("The \"%s\" test returned an unexpected status code: %v", test.Title, resp.Status)
+			t.Errorf("The \"%s\" test returned an unexpected status code: %v", test.Message, resp.Status)
 		}
 	}
 }
@@ -56,9 +55,8 @@ func ExampleMessage_Push() {
 	// You'll need to configure these by logging in to https://pushover.net.
 	token := "KzGDORePKggMaC0QOYAMyEEuZJnyUi"
 	user := "e9e1495ec75826de5983cd1abc8031"
-	device := "test_device"
 
 	// Send a new message using the Push method.
-	m := pushover.NewMessage(token, user, device)
-	m.Push("Test Title", "Test message contents")
+	m := pushover.NewMessage(token, user)
+	m.Push("Test message contents")
 }
