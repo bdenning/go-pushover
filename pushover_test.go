@@ -58,7 +58,6 @@ func TestPushConnectionFailure(t *testing.T) {
 	}
 
 	// TODO(@bdenning) We should test here for specific error responses.
-	// These will be either ErrHTTPStatus (if behind a proxy) or a connection failure if directly connected to the internet.
 }
 
 // TestPush runs through a number of test cases (testCases) and ensures that API responses are as expected.
@@ -84,13 +83,13 @@ func TestPush(t *testing.T) {
 
 		// Send a message and check for errors
 		resp, err := m.Push(test.Title, test.Message)
-		if err != nil {
-			if test.ExpectedStatus != 0 {
-				t.Errorf("A test that should have failed \"%s\" has passed: %v", test.Title, err)
-			}
+
+		// Check for failures that did not result in Push() returning an error
+		if err == nil && resp.Status == 0 {
+			t.Errorf("A test that should have failed \"%s\" has passed: %v", test.Title, err)
 		}
 
-		// Just to double check, we make sure that the status code returned by the API is what we were expecting.
+		// Check that the the status returned by the API is what we were expecting.
 		if resp.Status != test.ExpectedStatus {
 			t.Errorf("The \"%s\" test returned an unexpected status code: %v", test.Title, resp.Status)
 		}
