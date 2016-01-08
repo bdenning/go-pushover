@@ -46,7 +46,6 @@ var testCases = []struct {
 		0},
 }
 
-/*
 // TestPushConnectionFailure tests what will happen if the pushover.net API cannot be contacted due to network connectivity problems.
 func TestPushConnectionFailure(t *testing.T) {
 	m := pushover.NewMessage("", "", "")
@@ -61,7 +60,6 @@ func TestPushConnectionFailure(t *testing.T) {
 	// TODO(@bdenning) We should test here for specific error responses.
 	// These will be either ErrHTTPStatus (if behind a proxy) or a connection failure if directly connected to the internet.
 }
-*/
 
 // TestPush runs through a number of test cases (testCases) and ensures that API responses are as expected.
 func TestPush(t *testing.T) {
