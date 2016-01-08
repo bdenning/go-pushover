@@ -1,6 +1,6 @@
 # Pushover Golang Package
 
-[![Documentation](https://godoc.org/github.com/bdenning/pushover?status.svg)](https://godoc.org/github.com/bdenning/pushover) [![Build Status](https://drone.io/github.com/bdenning/pushover/status.png)](https://drone.io/github.com/bdenning/pushover/latest) [![Coverage Status](https://coveralls.io/repos/bdenning/pushover/status.svg?branch=master&service=github)](https://coveralls.io/repos/bdenning/pushover/status.svg?branch=master)
+[![Documentation](https://godoc.org/github.com/bdenning/pushover?status.svg)](https://godoc.org/github.com/bdenning/pushover) [![Build Status](https://drone.io/github.com/bdenning/pushover/status.png)](https://drone.io/github.com/bdenning/pushover/latest) [![Coverage Status](https://coveralls.io/repos/bdenning/pushover/badge.svg?branch=master&service=github)](https://coveralls.io/repos/bdenning/pushover?branch=master)
 
 A golang package for sending notifications via https://api.pushover.net.
 
