@@ -38,6 +38,12 @@ var testCases = []struct {
 		"Invalid User Token", "This test should fail",
 		`{"user":"invalid","errors":["user identifier is not a valid user, group, or subscribed user key"],"status":0,"request":"024e029a6569c0224c8e3a5510657ee8"}`,
 		0},
+	{"$token$",
+		"[invalid user token]",
+		"$device$",
+		"Error Status Without Error Response", "This test should fail",
+		`{"user":"invalid","status":0,"request":"024e029a6569c0224c8e3a5510657ee8"}`,
+		0},
 }
 
 func TestPush(t *testing.T) {

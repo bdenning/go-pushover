@@ -61,9 +61,11 @@ func (m *Message) Push(title string, message string) (r *Response, err error) {
 
 	// Check to see if pushover.net set the status to indicate an error
 	if r.Status != 1 {
+		if len(r.Errors) < 1 {
+			return r, errors.New("Recieved a status code indicating an error but did not receive an error message from pushover.net")
+		}
+
 		// TODO(@bdenning) Looks like the API can actualy return an array. We should support this.
-		// TODO(@bdenning) There potential for a crash here if ther API retruns a status of 0 but no errors.
-		// Write a unit test to produce this use case and then ensure that code handles it correctly.
 		return r, errors.New(r.Errors[0])
 	}
 
