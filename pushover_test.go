@@ -32,6 +32,11 @@ func TestPush(t *testing.T) {
 			m.URL = s.URL
 		}
 
+		// Don't send a test message for test cases that are intended to test network connectivity and other non-API failures
+		if os.Getenv("PUSHOVER_USE_REAL_API") == "true" && test.URL != pushover.PushoverURL {
+			t.Skip()
+		}
+
 		// Send a message and check for errors
 		resp, err := m.Push(test.Title, test.Message)
 

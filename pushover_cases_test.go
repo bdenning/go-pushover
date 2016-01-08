@@ -60,4 +60,12 @@ var testCases = []struct {
 		"http://example.net:5555",
 		``,
 		0},
+	{"$token$",
+		"$user$",
+		"$device$",
+		"Invalid HTTP protocol",
+		"This test should fail",
+		"ftp://example.net",
+		``,
+		0},
 }
