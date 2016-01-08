@@ -1,5 +1,8 @@
 # Pushover Golang Package
-A golang package for sending notifications via https://pushover.net.
+
+[![Documentation](https://godoc.org/github.com/bdenning/pushover?status.svg)](https://godoc.org/github.com/bdenning/pushover)
+
+A golang package for sending notifications via https://api.pushover.net.
 
 This library is **not intended for production use** and was written by its author as an exercise to learn more about golang. Please don't import it and use it in any projects that you care about.
 
@@ -35,7 +38,3 @@ $ echo "Server exchange01.example.net is in a critcal state" | pushover
 ```
 
 It is not currently possible to provide a title. At present the title will be set to the hostname of the computer it was sent from.
-
-# Links
-* Pushover API Documentation: https://pushover.net/api
-* Documentation for this package:  https://godoc.org/github.com/bdenning/pushover
