@@ -11,9 +11,23 @@ import (
 	"github.com/bdenning/pushover"
 )
 
+// TestNewMessage is probably unnessiary at present but may include sanity checks for API keys later on
+func TestNewMessage(t *testing.T) {
+	m := pushover.NewMessage("", "")
+
+	if m.URL != pushover.PushoverURL {
+		t.Fail()
+	}
+}
+
 // TestPush runs through a number of test cases (testCases) and ensures that API responses are as expected.
 func TestPush(t *testing.T) {
 	for _, test := range testCases {
+		// Run tests that are intended to test network connectivity and other non-API failures against the real API
+		if os.Getenv("PUSHOVER_USE_REAL_API") == "true" && test.URL != pushover.PushoverURL {
+			t.Skip()
+		}
+
 		// Create a fresh new message object for each test case
 		m := pushover.NewMessage(test.Token, test.User)
 
@@ -29,11 +43,6 @@ func TestPush(t *testing.T) {
 			defer s.Close()
 
 			m.URL = s.URL
-		}
-
-		// Don't send a test message for test cases that are intended to test network connectivity and other non-API failures
-		if os.Getenv("PUSHOVER_USE_REAL_API") == "true" && test.URL != pushover.PushoverURL {
-			t.Skip()
 		}
 
 		// Send a message and check for errors
