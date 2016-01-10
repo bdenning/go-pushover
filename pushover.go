@@ -51,7 +51,7 @@ func (m *Message) Push(message string) (r *Response, err error) {
 	}
 	defer resp.Body.Close()
 
-	// Decode the json resopnse from pushover.net in to our Response struct
+	// Decode the json response from pushover.net in to our Response struct
 	if err := json.NewDecoder(resp.Body).Decode(r); err != nil {
 		return r, err
 	}
