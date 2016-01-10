@@ -41,7 +41,7 @@ func (m *Message) Push(message string) (r *Response, err error) {
 	msg.Set("user", m.User)
 	msg.Set("message", message)
 
-	// Initalise and empty Response
+	// Initalise an empty Response
 	r = &Response{}
 
 	// Send the message the the pushover.net API
@@ -51,7 +51,7 @@ func (m *Message) Push(message string) (r *Response, err error) {
 	}
 	defer resp.Body.Close()
 
-	// Decode the json returned by pushover.net in to our Response struct
+	// Decode the json resopnse from pushover.net in to our Response struct
 	if err := json.NewDecoder(resp.Body).Decode(r); err != nil {
 		return r, err
 	}
