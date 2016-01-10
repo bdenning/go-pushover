@@ -11,15 +11,6 @@ import (
 	"github.com/bdenning/pushover"
 )
 
-// TestNewMessage is probably unnessiary at present but may include sanity checks for API keys later on
-func TestNewMessage(t *testing.T) {
-	m := pushover.NewMessage("", "")
-
-	if m.URL != pushover.PushoverURL {
-		t.Fail()
-	}
-}
-
 // TestPush runs through a number of test cases (testCases) and ensures that API responses are as expected.
 func TestPush(t *testing.T) {
 	for _, test := range testCases {
