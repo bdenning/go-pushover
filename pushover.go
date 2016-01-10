@@ -47,7 +47,7 @@ func (m *Message) Push(message string) (r *Response, err error) {
 	// Send the message the the pushover.net API
 	resp, err := http.PostForm(m.URL, msg)
 	if err != nil {
-		return &Response{}, err
+		return r, err
 	}
 	defer resp.Body.Close()
 
