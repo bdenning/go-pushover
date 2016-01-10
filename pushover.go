@@ -4,7 +4,6 @@ package pushover
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 )
@@ -42,24 +41,18 @@ func (m *Message) Push(message string) (r *Response, err error) {
 	msg.Set("user", m.User)
 	msg.Set("message", message)
 
-	// Initalise an empty response
+	// Initalise and empty Response
 	r = &Response{}
 
 	// Send the message the the pushover.net API
 	resp, err := http.PostForm(m.URL, msg)
 	if err != nil {
-		return r, err
+		return &Response{}, err
 	}
 	defer resp.Body.Close()
 
-	// Read the JSON response in to a []byte
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return r, err
-	}
-
-	// Copy the response from pushover.net in to a pushover.Response struct
-	if err := json.Unmarshal(body, r); err != nil {
+	// Decode the json returned by pushover.net in to our Response struct
+	if err := json.NewDecoder(resp.Body).Decode(r); err != nil {
 		return r, err
 	}
 
