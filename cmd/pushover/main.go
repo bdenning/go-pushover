@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/bdenning/pushover"
+	"github.com/bdenning/go-pushover"
 )
 
 func getEnvSettings() (token string, user string) {

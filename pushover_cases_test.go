@@ -1,6 +1,6 @@
 package pushover_test
 
-import "github.com/bdenning/pushover"
+import "github.com/bdenning/go-pushover"
 
 var testCases = []struct {
 	Token            string

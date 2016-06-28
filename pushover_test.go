@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/bdenning/pushover"
+	"github.com/bdenning/go-pushover"
 )
 
 // TestPush runs through a number of test cases (testCases) and ensures that API responses are as expected.
