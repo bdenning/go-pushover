@@ -2,10 +2,11 @@
 package pushover
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
-	"net/url"
 )
 
 const (
@@ -17,9 +18,11 @@ const (
 
 // Message contains all the required settings for sending messages via the pushover.net API
 type Message struct {
-	Token string
-	User  string
-	URL   string
+	Token   string `json:"token"`
+	User    string `json:"user"`
+	Device  string `json:"device"`
+	Message string `json:"message"`
+	Title   string `json:"title"`
 }
 
 // Response contains the JSON response returned by the pushover.net API
@@ -30,23 +33,32 @@ type Response struct {
 }
 
 // NewMessage returns a new Message with API token values and a recipient device configured.
-func NewMessage(token string, user string) *Message {
-	return &Message{token, user, PushoverURL}
+func NewMessage(token, user string) *Message {
+	return &Message{Token: token, User: user}
+}
+
+func (m *Message) SetTitle(title string) {
+	m.Title = title
 }
 
 // Push sends a message via the pushover.net API and returns the json response
 func (m *Message) Push(message string) (r *Response, err error) {
-	msg := url.Values{}
-	msg.Set("token", m.Token)
-	msg.Set("user", m.User)
-	msg.Set("message", message)
+	m.Message = message
 
 	// Initalise an empty Response
 	r = &Response{}
 
-	// Send the message the the pushover.net API
-	resp, err := http.PostForm(m.URL, msg)
+	msg, err := json.Marshal(m)
 	if err != nil {
+		return r, err
+	}
+
+	buf := bytes.NewReader(msg)
+	// Send the message the the pushover.net API
+	resp, err := http.Post(PushoverURL, "application/json", buf)
+	//resp, err := http.PostForm(m.URL, msg)
+	if err != nil {
+
 		return r, err
 	}
 	defer resp.Body.Close()
@@ -63,6 +75,7 @@ func (m *Message) Push(message string) (r *Response, err error) {
 		}
 
 		// TODO(@bdenning) Looks like the API can actualy return an array. We should support this.
+		fmt.Printf("error: %s", err.Error())
 		return r, errors.New(r.Errors[0])
 	}
 
