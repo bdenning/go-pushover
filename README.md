@@ -1,10 +1,12 @@
 # Pushover Golang Package
 
-[![Documentation](https://godoc.org/github.com/bdenning/go-pushover?status.svg)](https://godoc.org/github.com/bdenning/go-pushover) [![Build Status](https://drone.io/github.com/bdenning/go-pushover/status.png)](https://drone.io/github.com/bdenning/go-pushover/latest) [![Coverage Status](https://coveralls.io/repos/bdenning/go-pushover/badge.svg?branch=master&service=github)](https://coveralls.io/github/bdenning/go-pushover?branch=master)
+[![Documentation](https://godoc.org/github.com/invisiblethreat/go-pushover?status.svg)](https://godoc.org/github.com/invisiblethreat/go-pushover) [![Build Status](https://drone.io/github.com/invisiblethreat/go-pushover/status.png)](https://drone.io/github.com/invisiblethreat/go-pushover/latest) [![Coverage Status](https://coveralls.io/repos/invisiblethreat/go-pushover/badge.svg?branch=master&service=github)](https://coveralls.io/github/invisiblethreat/go-pushover?branch=master)
 
-A golang package for sending notifications via https://api.pushover.net.
+A Golang package for sending notifications via https://api.pushover.net.
 
-This library is **not intended for production use** and was written by its author as an exercise to learn more about golang. Please don't import it and use it in any projects that you care about.
+This library is a mashup of https://github.com/bdenning/go-pushover and
+https://github.com/gregdel/pushover. Neither did exactly what I wanted, in the
+way that I wanted.
 
 # Package Example
 You can use the pushover package within your golang applications as follows:
